@@ -5318,7 +5318,7 @@
   "resolved" "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   "version" "2.6.2"
 
-"ngx-pinch-zoom@2.5.4":
+"ngx-pinch-zoom@^2.5.4":
   "integrity" "sha512-pZEdk+tTdZAOd7BlYfukdcxRF0BeH0OX6AlZNz32wX8Dllka6ub2xQ9GK+Lci/8Q3zO/DruPqulGGRG8yprFcQ=="
   "resolved" "https://registry.npmjs.org/ngx-pinch-zoom/-/ngx-pinch-zoom-2.5.4.tgz"
   "version" "2.5.4"
