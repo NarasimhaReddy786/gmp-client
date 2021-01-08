@@ -1,0 +1,75 @@
+<div style="text-align: center; font-family: Arial, Helvetica, sans-serif;">
+
+    <!-- Page Title -->
+    <h1 style="color:#3254A0; font-size: 35px; font-weight: bold;">Get My Path</h1> 
+    
+    <br>
+
+    <!-- Location -->
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <b><input matInput disabled [value]="destinationDetails?.location?.locationName"></b>
+        </mat-form-field>
+    </div>
+
+    <br>
+
+    <!-- Source -->
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Source</mat-label>
+            <b><input matInput disabled [value]="destinationDetails?.source?.positionName"></b>
+        </mat-form-field>
+    </div>
+
+    <br>
+    
+    <!-- Destination drop down -->
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Pick a destination</mat-label>
+            <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('A');">
+                <mat-option [value]=null></mat-option>
+                <mat-option *ngFor="let position of destinationDetails?.destinationList" [value]=position.positionId>{{position.positionName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="fcDestinationDropDown.errors?.required">
+                Destination is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+
+    <div>
+        <ng-container *ngIf="routeMapFetchAllStatus === FETCH_SUCCESS; else checkIfFetchFailed">
+            <div style="padding-top: 50px; padding-bottom: 50px;">
+                <span style="padding-right: 40px; vertical-align: middle;">Choose a path</span>
+                <button style="color: chartreuse; background-color: chartreuse; width: 100px; height: 40px;" (click)="fetchRouteMap('S');"></button>
+                <button style="color: red; background-color: red; width: 100px; height: 40px;" (click)="fetchRouteMap('L');"></button>
+            </div>
+            <pinch-zoom>
+                <img [src]='routeMap' />
+            </pinch-zoom>
+        </ng-container>
+        <ng-template #checkIfFetchFailed>
+            <ng-container *ngIf="routeMapFetchAllStatus === FETCH_FAILURE;">
+                Path Not Found
+            </ng-container>
+        </ng-template>
+    </div>
+
+
+    <div>
+        <ng-container *ngIf="routeMapFetchStatus === FETCH_SUCCESS; else checkIfFetchFailed">
+            <pinch-zoom>
+                <img [src]='routeMap' />
+            </pinch-zoom>
+        </ng-container>
+        <ng-template #checkIfFetchFailed>
+            <ng-container *ngIf="routeMapFetchStatus === FETCH_FAILURE;">
+                Path Not Found
+            </ng-container>
+        </ng-template>
+    </div>
+
+</div>

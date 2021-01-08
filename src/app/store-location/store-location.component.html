@@ -1,0 +1,128 @@
+<div style="text-align: center; font-family: Arial, Helvetica, sans-serif; padding-bottom: 100px;">
+
+    <!-- Page Title -->
+    <h1 style="color:#3254A0; font-size: 35px; font-weight: bold;">Get My Path</h1>
+
+    <h2 style="color:#3254A0; font-size: 30px; font-weight: bold;">Store a Map</h2>
+
+    <span style="color:red;" *ngIf="message">{{message}}</span>
+
+
+
+    <div [formGroup]="locationDetailsFormGroup" style="padding-top: 50px;">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Location name</mat-label>
+                <input required matInput formControlName="fcLocationNameInputBox">
+                <mat-error *ngIf="fcLocationNameInputBox.errors?.required">
+                    Location name is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    
+
+    <div style="padding-top: 50px;">
+        <input #file type="file" accept='image/*' (change)="previewImage(file.files)" />
+    </div>
+
+
+    <!--div style="padding-top: 50px;">
+        <img id="mapImage" [src]="imgURL" *ngIf="imgURL" (click)="fetchPositionDetails($event);">
+    </div-->
+
+    <canvas id="myCanvas" style="border:1px solid #d3d3d3;" (click)="fetchPositionDetails($event);">
+        Your browser does not support the canvas element.
+    </canvas>
+
+
+    <div [formGroup]="positionDetailsFormGroup" *ngIf="isShowPositionDetailsForm" style="padding-top: 50px;">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Position name</mat-label>
+                <input required matInput formControlName="fcPositionNameInputBox">
+                <mat-error *ngIf="fcPositionNameInputBox.errors?.required">
+                    Position name is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Is a destination?</mat-label>
+                <mat-select required formControlName="fcIsDestinationDropDown">
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="No">No</mat-option>
+                </mat-select>
+                <mat-error *ngIf="fcIsDestinationDropDown.errors?.required">
+                    Destination Yes/No is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <button mat-button mat-raised-button (click)="addPosition();">Add Position</button>
+    </div>
+
+
+    <div *ngIf="isShowStartPositionRelationsButton" style="padding-top: 50px;">
+        <div>
+            Click on a Point of Interest in the map
+        </div>
+        
+        <div *ngIf="this.positionDetails.length > 0">
+            <br><br>
+            OR
+            <br><br>
+            <button mat-button mat-raised-button (click)="fetchPositionRelations();">Start with position relations</button>
+        </div>
+    </div>
+
+
+    <div *ngIf="isFetchPositionRelations" style="padding-top: 50px;">
+        <table style="margin: auto;">
+            <tr>
+                <th style="padding-right: 20px;">Position Id</th>
+                <th style="padding-right: 20px;">Position Name</th>
+                <th style="padding-right: 20px;">Position Relations</th>
+                <th style="padding-right: 20px;"></th>
+                <th style="padding-right: 20px;"></th>
+            </tr>
+            <tr *ngFor="let position of positionDetails">
+                <td style="text-align: left;">
+                    {{ position.position_id }}
+                </td>
+                <td style="text-align: left;">
+                    {{ position.position_name }}
+                </td>
+                <td style="text-align: left;">
+                    <mat-form-field appearance="outline">
+                        <input matInput [(ngModel)]=position.position_relations_array />
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Horizontal to</mat-label>
+                        <mat-select [(value)]=position.horizontal_to>
+                            <mat-option *ngFor="let positionId of lodash.range(position.position_id)" [value]=positionId>{{positionId}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vertical to</mat-label>
+                        <mat-select [(value)]=position.vertical_to>
+                            <mat-option *ngFor="let positionId of lodash.range(position.position_id)" [value]=positionId>{{positionId}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div *ngIf="isFetchPositionRelations" style="padding-top: 50px;">
+        <button mat-button mat-raised-button (click)="savePositionDetails();">Finish</button>
+    </div>
+
+</div>
