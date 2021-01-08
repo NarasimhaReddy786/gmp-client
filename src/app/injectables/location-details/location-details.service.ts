@@ -7,7 +7,7 @@ import { Location } from 'src/app/store-location/location.model';
 })
 export class LocationDetailsService {
 
-  readonly baseUrl: string = 'http://127.0.0.1:5000';
+  readonly baseUrl: string = 'https://gmp-be.herokuapp.com';
   readonly storeLocationDetailsUri = '/store_location';
 
   constructor(private httpClient: HttpClient) { }

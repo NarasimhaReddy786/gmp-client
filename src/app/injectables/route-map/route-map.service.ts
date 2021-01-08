@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class RouteMapService {
 
-  readonly baseUrl: string = 'http://127.0.0.1:5000';
+  readonly baseUrl: string = 'https://gmp-be.herokuapp.com';
   readonly routeMapFetchUri = '/shortest_path';
 
 

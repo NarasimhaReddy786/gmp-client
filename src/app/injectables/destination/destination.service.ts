@@ -8,7 +8,7 @@ import { DestinationDetails } from './destination.model';
 })
 export class DestinationService {
 
-  readonly baseUrl: string = 'http://127.0.0.1:5000';
+  readonly baseUrl: string = 'https://gmp-be.herokuapp.com';
   readonly destinationListUri = '/destination_list';
 
   constructor(private httpClient: HttpClient) { }
