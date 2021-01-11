@@ -1,0 +1,31 @@
+<div style="text-align: center; font-family: Arial, Helvetica, sans-serif; padding-bottom: 100px;">
+
+    <!-- Page Title -->
+    <h1 class="application-header" style="cursor:pointer;" routerLink="/adminDashboard">Get My Path</h1>
+
+    <h2 style="color:#3254A0; font-size: 30px; font-weight: bold;">Generate QR Codes</h2>
+
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Pick a location</mat-label>
+            <mat-select required [formControl]="fcLocationNameDropDown" (selectionChange)="generateQrCode();">
+                <mat-option [value]=null></mat-option>
+                <mat-option *ngFor="let location of existingLocationsArray" [value]=location.locationId>{{location.locationName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="fcLocationNameDropDown.errors?.required">
+                Location name is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+
+    <div *ngIf="qrCodeGenerationStatus === SUCCESS">
+        Downloaded Successfully.
+    </div>
+
+
+    <div *ngIf="qrCodeGenerationStatus === FAILURE">
+        Downloaded Failed.
+    </div>
+
+</div>

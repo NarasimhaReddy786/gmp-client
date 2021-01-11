@@ -24,6 +24,7 @@ export class PathSearchComponent implements OnInit {
   readonly FETCH_SUCCESS = 'FETCH_SUCCESS';
   readonly FETCH_FAILURE = 'FETCH_FAILURE';
 
+  destinationListFetchStatus: string = null;
   routeMapFetchAllStatus: string = null;
   routeMapFetchStatus: string = null;
 
@@ -50,10 +51,11 @@ export class PathSearchComponent implements OnInit {
   /** Fetches the Destinations */
   private fetchDestinationList(locationId: string, positionId: string): void {
     this.destinationService.destinationList(locationId, positionId).then(destinationListResponse => {
-      console.log(destinationListResponse);
       this.destinationDetails = destinationListResponse;
+      this.destinationListFetchStatus = this.FETCH_SUCCESS;
     }, error => {
       console.log('PathSearchComponent : Error while performing DestinationService destinationList operation', error);
+      this.destinationListFetchStatus = this.FETCH_FAILURE;
     });
   }
 

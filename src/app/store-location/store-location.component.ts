@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { Location, Position, PositionCoordinates, PositionRelations } from './location.model';
 import * as _ from 'lodash';
 import { LocationDetailsService } from '../injectables/location-details/location-details.service';
+import { Location as LocationWithId } from '../injectables/destination/destination.model';
 
 @Component({
   selector: 'app-store-location',
@@ -10,6 +11,8 @@ import { LocationDetailsService } from '../injectables/location-details/location
   styleUrls: ['./store-location.component.css']
 })
 export class StoreLocationComponent implements OnInit {
+
+  existingLocationsArray: LocationWithId[];
 
   lodash = _;
 
@@ -29,11 +32,16 @@ export class StoreLocationComponent implements OnInit {
   position: Position;
   positionId: number = 0;
 
+  locationStoreStatus: string = null;
+
+  readonly SUCCESS = 'SUCCESS';
+  readonly FAILURE = 'FAILURE';
+
 
   constructor(private formBuilder: FormBuilder,
     private locationDetailsService: LocationDetailsService) { 
     this.locationDetailsFormGroup = formBuilder.group({
-      fcLocationNameInputBox: [null]
+      fcLocationNameInputBox: [null, [this.locationNameValidator()]]
     });
     this.positionDetailsFormGroup = formBuilder.group({
       fcPositionNameInputBox: [null],
@@ -43,7 +51,11 @@ export class StoreLocationComponent implements OnInit {
 
 
   ngOnInit() {
-
+    this.locationDetailsService.readLocationNames().then(locationNamesResponse => {
+      this.existingLocationsArray = locationNamesResponse;
+    }, error => {
+      console.log('StoreLocationComponent : Error while performing LocationDetailsService readLocationNames operation', error);
+    });
   }
 
 
@@ -173,11 +185,31 @@ export class StoreLocationComponent implements OnInit {
 
   private storeLocationDetails(location: Location): void {
     this.locationDetailsService.storeLocationDetails(location).then(destinationListResponse => {
-      console.log(destinationListResponse);
+      this.locationStoreStatus = this.SUCCESS;
     }, error => {
       console.log('StoreLocationComponent : Error while performing LocationDetailsService storeLocationDetails operation', error);
+      this.locationStoreStatus = this.FAILURE;
     });
   }
+
+
+  public startOver(): void {
+    this.locationStoreStatus = null;
+  }
+
+
+  locationNameValidator(): ValidatorFn {  
+    return (control: AbstractControl): { [key: string]: any } | null =>  {
+        if (!_.isNil(control.value) && !_.isNil(this.existingLocationsArray)) {
+            for (let location of this.existingLocationsArray) {
+              if (location.locationName.toUpperCase().trim() === control.value.toUpperCase().trim())
+                return { locationNameExistsAlready: true }
+            }
+        }
+        return null;
+    }
+  }
+
 
 
   get fcLocationNameInputBox(): FormControl {

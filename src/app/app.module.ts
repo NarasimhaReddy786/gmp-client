@@ -11,12 +11,16 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreLocationComponent } from './store-location/store-location.component';
 import { PinchZoomModule } from 'ngx-pinch-zoom';
+import { QrCodeGeneratorComponent } from './qr-code-generator/qr-code-generator.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PathSearchComponent,
-    StoreLocationComponent
+    StoreLocationComponent,
+    QrCodeGeneratorComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

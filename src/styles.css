@@ -1,4 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; padding: 0; font-family: Arial, "Helvetica", sans-serif; }
+
+.application-header {
+    border-bottom: solid;
+    border-bottom-width: 0.04px;
+    border-color:#D3D3D3;
+    height:70px;
+    z-index: 2; 
+    width: 100%;
+    background-color: #e6e6e6;
+    
+    color:#3254A0; 
+    font-size: 35px; 
+    font-weight: bold; 
+    margin-top: 0px;
+    vertical-align: middle;
+
+    padding-top: 20px;
+}

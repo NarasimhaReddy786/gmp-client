@@ -1,42 +1,49 @@
-<div style="text-align: center; font-family: Arial, Helvetica, sans-serif;">
+<div style="text-align: center;">
 
     <!-- Page Title -->
-    <h1 style="color:#3254A0; font-size: 35px; font-weight: bold;">Get My Path</h1> 
+    <h1 class="application-header">Get My Path</h1>
     
     <br>
 
-    <!-- Location -->
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>Location</mat-label>
-            <b><input matInput disabled [value]="destinationDetails?.location?.locationName"></b>
-        </mat-form-field>
+
+    <div *ngIf="destinationListFetchStatus != FETCH_FAILURE">
+        <!-- Location -->
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Location</mat-label>
+                <b><input matInput disabled [value]="destinationDetails?.location?.locationName"></b>
+            </mat-form-field>
+        </div>
+
+        <br>
+
+        <!-- Source -->
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Source</mat-label>
+                <b><input matInput disabled [value]="destinationDetails?.source?.positionName"></b>
+            </mat-form-field>
+        </div>
+
+        <br>
+        
+        <!-- Destination drop down -->
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Pick a destination</mat-label>
+                <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('A');">
+                    <mat-option [value]=null></mat-option>
+                    <mat-option *ngFor="let position of destinationDetails?.destinationList" [value]=position.positionId>{{position.positionName}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="fcDestinationDropDown.errors?.required">
+                    Destination is required
+                </mat-error>
+            </mat-form-field>
+        </div>
     </div>
 
-    <br>
-
-    <!-- Source -->
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>Source</mat-label>
-            <b><input matInput disabled [value]="destinationDetails?.source?.positionName"></b>
-        </mat-form-field>
-    </div>
-
-    <br>
-    
-    <!-- Destination drop down -->
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>Pick a destination</mat-label>
-            <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('A');">
-                <mat-option [value]=null></mat-option>
-                <mat-option *ngFor="let position of destinationDetails?.destinationList" [value]=position.positionId>{{position.positionName}}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="fcDestinationDropDown.errors?.required">
-                Destination is required
-            </mat-error>
-        </mat-form-field>
+    <div *ngIf="destinationListFetchStatus === FETCH_FAILURE">
+        Location details not found.
     </div>
 
 
