@@ -29,6 +29,15 @@ export class DestinationsConverter {
             destinationDetails.destinationList = destinations;
         }
 
+        if (!_.isNil(destinationsWs.amenities) && !_.isEmpty(destinationsWs.amenities)) {
+            let amenities = new Array as Position[];
+            for (let amenity of destinationsWs.amenities) {
+                let amenityModel = new Position(amenity.positionId, amenity.positionName);
+                amenities.push(amenityModel);
+            }
+            destinationDetails.amenitiesList = amenities;
+        }
+
         return destinationDetails;
     }
 }

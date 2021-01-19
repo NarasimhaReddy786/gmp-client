@@ -1,44 +1,65 @@
-<div style="text-align: center;">
+<div style="text-align: center; width: 100%;">
 
     <!-- Page Title -->
     <h1 class="application-header">Get My Path</h1>
-    
-    <br>
 
 
-    <div *ngIf="destinationListFetchStatus != FETCH_FAILURE">
-        <!-- Location -->
+    <div *ngIf="destinationListFetchStatus != FETCH_FAILURE" style="display: flex; padding-left: 3%; padding-right: 3%;">
         <div>
-            <mat-form-field appearance="outline">
-                <mat-label>Location</mat-label>
-                <b><input matInput disabled [value]="destinationDetails?.location?.locationName"></b>
-            </mat-form-field>
+            <!-- Location -->
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Location</mat-label>
+                    <b><input matInput disabled [value]="destinationDetails?.location?.locationName"></b>
+                </mat-form-field>
+            </div>
+
+
+            <!-- Source -->
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Source</mat-label>
+                    <mat-select required [formControl]="fcSourceDropDown" (selectionChange)="fetchRouteMap('A');">
+                        <mat-option *ngFor="let position of allPositions" [value]=position.positionId>{{position.positionName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="fcSourceDropDown.errors?.required">
+                        Source is required
+                    </mat-error>
+                    <mat-error *ngIf="fcSourceDropDown.errors?.sourceAndDestinationAreSame">
+                        Source and Destination can NOT be same.
+                        Change either one of those.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            
+            <!-- Destination drop down -->
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Destination</mat-label>
+                    <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('A');">
+                        <mat-option [value]=null></mat-option>
+                        <mat-option *ngFor="let position of allPositions" [value]=position.positionId>{{position.positionName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="fcDestinationDropDown.errors?.required">
+                        Destination is required
+                    </mat-error>
+                    <mat-error *ngIf="fcDestinationDropDown.errors?.sourceAndDestinationAreSame">
+                        Source and Destination can NOT be same.
+                        Change either one of those.
+                    </mat-error>
+                </mat-form-field>
+            </div>
         </div>
 
-        <br>
+        <span class="fill-remaining-space"></span>
 
-        <!-- Source -->
-        <div>
-            <mat-form-field appearance="outline">
-                <mat-label>Source</mat-label>
-                <b><input matInput disabled [value]="destinationDetails?.source?.positionName"></b>
-            </mat-form-field>
-        </div>
-
-        <br>
-        
-        <!-- Destination drop down -->
-        <div>
-            <mat-form-field appearance="outline">
-                <mat-label>Pick a destination</mat-label>
-                <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('A');">
-                    <mat-option [value]=null></mat-option>
-                    <mat-option *ngFor="let position of destinationDetails?.destinationList" [value]=position.positionId>{{position.positionName}}</mat-option>
-                </mat-select>
-                <mat-error *ngIf="fcDestinationDropDown.errors?.required">
-                    Destination is required
-                </mat-error>
-            </mat-form-field>
+        <div *ngIf="destinationDetails?.amenitiesList != null" style="padding-top: 5px;">
+            <div *ngFor="let amenity of destinationDetails?.amenitiesList">
+                <div style="margin-bottom: 10px; float: right;">
+                    <button mat-button mat-raised-button (click)="goToAmenity(amenity);" style="width: 130px;">{{amenity.positionName}}</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -49,10 +70,12 @@
 
     <div>
         <ng-container *ngIf="routeMapFetchAllStatus === FETCH_SUCCESS; else checkIfFetchFailed">
-            <div style="padding-top: 50px; padding-bottom: 50px;">
-                <span style="padding-right: 40px; vertical-align: middle;">Choose a path</span>
-                <button style="color: chartreuse; background-color: chartreuse; width: 100px; height: 40px;" (click)="fetchRouteMap('S');"></button>
-                <button style="color: red; background-color: red; width: 100px; height: 40px;" (click)="fetchRouteMap('L');"></button>
+            <div style="padding-top: 20px; display: flex; justify-content: center;">
+                <span>Choose a path</span>
+            </div>
+            <div style="padding-top: 10px; padding-bottom: 30px; display: flex; justify-content: center;">
+                <div><button style="color: #50C878; background-color: #50C878; width: 100px; height: 40px; border-radius: 10px;" (click)="fetchRouteMap('S');"></button></div>
+                <div style="padding-left: 20px;"><button style="color: #ef3038; background-color: #ef3038; width: 100px; height: 40px; border-radius: 10px;" (click)="fetchRouteMap('L');"></button></div>
             </div>
             <pinch-zoom>
                 <img [src]='routeMap' />

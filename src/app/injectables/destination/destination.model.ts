@@ -2,6 +2,7 @@ export class DestinationDetails {
     location: Location;
     source: Position;
     destinationList: Position[];
+    amenitiesList: Position[];
 }
 
 export class Location {
