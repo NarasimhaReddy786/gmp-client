@@ -3,20 +3,18 @@
     <!-- Page Title -->
     <h1 class="application-header">Get My Path</h1>
 
-
     <div *ngIf="destinationListFetchStatus != FETCH_FAILURE" style="display: flex; padding-left: 3%; padding-right: 3%;">
         <div>
             <!-- Location -->
-            <div>
+            <div style="padding-top: 5px;">
                 <mat-form-field appearance="outline">
                     <mat-label>Location</mat-label>
                     <b><input matInput disabled [value]="destinationDetails?.location?.locationName"></b>
                 </mat-form-field>
             </div>
 
-
             <!-- Source -->
-            <div>
+            <div style="padding-top: 5px;">
                 <mat-form-field appearance="outline">
                     <mat-label>Source</mat-label>
                     <mat-select required [formControl]="fcSourceDropDown" (selectionChange)="fetchRouteMap('A');">
@@ -26,14 +24,14 @@
                         Source is required
                     </mat-error>
                     <mat-error *ngIf="fcSourceDropDown.errors?.sourceAndDestinationAreSame">
-                        Source and Destination are same!
+                        Source and Destination can NOT be same!
                     </mat-error>
                 </mat-form-field>
             </div>
 
             
             <!-- Destination drop down -->
-            <div>
+            <div style="padding-top: 5px;">
                 <mat-form-field appearance="outline">
                     <mat-label>Destination</mat-label>
                     <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('A');">
@@ -44,7 +42,7 @@
                         Destination is required
                     </mat-error>
                     <mat-error *ngIf="fcDestinationDropDown.errors?.sourceAndDestinationAreSame">
-                        Source and Destination are same!
+                        Source and Destination can NOT be same!
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -52,7 +50,7 @@
 
         <span class="fill-remaining-space"></span>
 
-        <div *ngIf="destinationDetails?.amenitiesList != null" style="padding-top: 5px;">
+        <div *ngIf="destinationDetails?.amenitiesList != null" style="padding-top: 10px;">
             <div *ngFor="let amenity of destinationDetails?.amenitiesList">
                 <div style="margin-bottom: 10px; float: right;">
                     <button mat-button mat-raised-button (click)="goToAmenity(amenity);" style="width: 130px;">{{amenity.positionName}}</button>
@@ -64,7 +62,6 @@
     <div *ngIf="destinationListFetchStatus === FETCH_FAILURE">
         Location details not found.
     </div>
-
 
     <div>
         <ng-container *ngIf="routeMapFetchAllStatus === FETCH_SUCCESS; else checkIfFetchFailed">
@@ -86,7 +83,6 @@
         </ng-template>
     </div>
 
-
     <div>
         <ng-container *ngIf="routeMapFetchStatus === FETCH_SUCCESS; else checkIfFetchFailed">
             <pinch-zoom>
@@ -101,3 +97,4 @@
     </div>
 
 </div>
+
