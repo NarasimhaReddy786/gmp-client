@@ -30,6 +30,8 @@ export class PathSearchComponent implements OnInit {
   routeMapFetchAllStatus: string = null;
   routeMapFetchStatus: string = null;
 
+  pathType: string;
+
 
   constructor(private router: Router,
     private destinationService: DestinationService,
@@ -91,6 +93,7 @@ export class PathSearchComponent implements OnInit {
     this.routeMapService.routeMapFetch(this.destinationDetails.location.locationId, this.fcSourceDropDown.value, this.fcDestinationDropDown.value, pathType).subscribe(data => {
       this.createRouteMapImageFromBlob(data);
       pathType === 'A' ? this.routeMapFetchAllStatus = this.FETCH_SUCCESS : this.routeMapFetchStatus = this.FETCH_SUCCESS;
+      this.pathType = pathType;
     }, error => {
       console.log('PathSearchComponent : Error while performing RouteMapService routeMapFetch operation', error);
       pathType === 'A' ? this.routeMapFetchAllStatus = this.FETCH_FAILURE : this.routeMapFetchStatus = this.FETCH_FAILURE;
@@ -110,7 +113,7 @@ export class PathSearchComponent implements OnInit {
 
   public goToAmenity(position: Position): void {
     this.fcDestinationDropDown.patchValue(position.positionId);
-    this.fetchRouteMap('A');
+    this.fetchRouteMap('S');
   }
 
 

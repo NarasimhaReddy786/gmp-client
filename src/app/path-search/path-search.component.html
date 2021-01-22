@@ -3,6 +3,7 @@
     <!-- Page Title -->
     <h1 class="application-header">Get My Path</h1>
 
+
     <div *ngIf="destinationListFetchStatus != FETCH_FAILURE" style="display: flex; padding-left: 3%; padding-right: 3%;">
         <div>
             <!-- Location -->
@@ -13,11 +14,12 @@
                 </mat-form-field>
             </div>
 
+
             <!-- Source -->
             <div style="padding-top: 9px;">
                 <mat-form-field appearance="outline">
                     <mat-label>Source</mat-label>
-                    <mat-select required [formControl]="fcSourceDropDown" (selectionChange)="fetchRouteMap('A');">
+                    <mat-select required [formControl]="fcSourceDropDown" (selectionChange)="fetchRouteMap('S');">
                         <mat-option *ngFor="let position of allPositions" [value]=position.positionId>{{position.positionName}}</mat-option>
                     </mat-select>
                     <mat-error *ngIf="fcSourceDropDown.errors?.required">
@@ -34,7 +36,7 @@
             <div style="padding-top: 9px;">
                 <mat-form-field appearance="outline">
                     <mat-label>Destination</mat-label>
-                    <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('A');">
+                    <mat-select required [formControl]="fcDestinationDropDown" (selectionChange)="fetchRouteMap('S');">
                         <mat-option [value]=null></mat-option>
                         <mat-option *ngFor="let position of allPositions" [value]=position.positionId>{{position.positionName}}</mat-option>
                     </mat-select>
@@ -50,7 +52,7 @@
 
         <span class="fill-remaining-space"></span>
 
-        <div *ngIf="destinationDetails?.amenitiesList != null" style="padding-top: 10px;">
+        <div *ngIf="destinationDetails?.amenitiesList != null" style="padding-top: 5px;">
             <div *ngFor="let amenity of destinationDetails?.amenitiesList">
                 <div style="margin-bottom: 10px; float: right;">
                     <button mat-button mat-raised-button (click)="goToAmenity(amenity);" style="width: 130px;">{{amenity.positionName}}</button>
@@ -63,28 +65,24 @@
         Location details not found.
     </div>
 
+
     <div>
-        <ng-container *ngIf="routeMapFetchAllStatus === FETCH_SUCCESS; else checkIfFetchFailed">
+        <ng-container *ngIf="routeMapFetchStatus === FETCH_SUCCESS; else checkIfFetchFailed">
             <div style="padding-top: 20px; display: flex; justify-content: center;">
                 <span>Choose a path</span>
             </div>
             <div style="padding-top: 10px; padding-bottom: 30px; display: flex; justify-content: center;">
-                <div><button style="color: #50C878; background-color: #50C878; width: 100px; height: 40px; border-radius: 10px;" (click)="fetchRouteMap('S');"></button></div>
-                <div style="padding-left: 20px;"><button style="color: #ef3038; background-color: #ef3038; width: 100px; height: 40px; border-radius: 10px;" (click)="fetchRouteMap('L');"></button></div>
+                <div>
+                    <button (click)="fetchRouteMap('S');" style="color: black; background-color: #50C878; width: 120px; height: 40px; border-radius: 10px;" [class.button-highlight]="pathType == 'S'">
+                        {{'Shortest Path'}}
+                    </button>
+                </div>
+                <div style="padding-left: 20px;">
+                    <button (click)="fetchRouteMap('L');" style="color: black; background-color: #E6BF00; width: 120px; height: 40px; border-radius: 10px;" [class.button-highlight]="pathType == 'L'">
+                        {{'Alternate Path'}}
+                    </button>
+                </div>
             </div>
-            <pinch-zoom>
-                <img [src]='routeMap' />
-            </pinch-zoom>
-        </ng-container>
-        <ng-template #checkIfFetchFailed>
-            <ng-container *ngIf="routeMapFetchAllStatus === FETCH_FAILURE;">
-                Path Not Found
-            </ng-container>
-        </ng-template>
-    </div>
-
-    <div>
-        <ng-container *ngIf="routeMapFetchStatus === FETCH_SUCCESS; else checkIfFetchFailed">
             <pinch-zoom>
                 <img [src]='routeMap' />
             </pinch-zoom>
@@ -97,4 +95,3 @@
     </div>
 
 </div>
-
